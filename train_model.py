@@ -92,6 +92,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
+from imblearn.over_sampling import SMOTE
+
+print("Original Training Data Shape:", X_train.shape)
+smote = SMOTE(random_state=42)
+X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
+print("Balanced Training Data Shape (After SMOTE):", X_train_smote.shape)
+# -----------------------------------------
 
 # -----------------------------------
 # 7. Train Random Forest Model
@@ -102,8 +109,7 @@ model = RandomForestClassifier(
     random_state=42
 )
 
-model.fit(X_train, y_train)
-
+model.fit(X_train_smote, y_train_smote)
 
 # -----------------------------------
 # 8. Evaluate Model
